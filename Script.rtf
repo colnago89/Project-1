@@ -1,0 +1,82 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 -- MySQL Workbench Forward Engineering\
+\
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;\
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;\
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';\
+\
+-- -----------------------------------------------------\
+-- Schema PURCHASE\
+-- -----------------------------------------------------\
+\
+-- -----------------------------------------------------\
+-- Schema PURCHASE\
+-- -----------------------------------------------------\
+CREATE SCHEMA IF NOT EXISTS `PURCHASE` DEFAULT CHARACTER SET utf8 ;\
+USE `PURCHASE` ;\
+\
+-- -----------------------------------------------------\
+-- Table `PURCHASE`.`CUSTOMER`\
+-- -----------------------------------------------------\
+CREATE TABLE IF NOT EXISTS `PURCHASE`.`CUSTOMER` (\
+  `cust_id` INT NOT NULL AUTO_INCREMENT,\
+  `name` VARCHAR(45) NOT NULL,\
+  `address` VARCHAR(45) NOT NULL,\
+  `city` VARCHAR(45) NOT NULL,\
+  `state` VARCHAR(2) NOT NULL,\
+  `zip` INT NOT NULL,\
+  `phone` INT NULL,\
+  PRIMARY KEY (`cust_id`))\
+ENGINE = InnoDB;\
+\
+\
+-- -----------------------------------------------------\
+-- Table `PURCHASE`.`ORDERS`\
+-- -----------------------------------------------------\
+CREATE TABLE IF NOT EXISTS `PURCHASE`.`ORDERS` (\
+  `order_id` INT NOT NULL AUTO_INCREMENT,\
+  `order_date` DATETIME NULL,\
+  `status` VARCHAR(45) NULL DEFAULT 'awaiting shipment',\
+  `cust_id` INT NULL,\
+  `item` VARCHAR(45) NULL,\
+  `qty` INT NULL,\
+  `total_cost` DECIMAL(2) NULL,\
+  PRIMARY KEY (`order_id`),\
+  INDEX `cust_id_idx` (`cust_id` ASC),\
+  CONSTRAINT `cust_id`\
+    FOREIGN KEY (`cust_id`)\
+    REFERENCES `mydb`.`CUSTOMER` (`cust_id`)\
+    ON DELETE CASCADE\
+    ON UPDATE NO ACTION)\
+ENGINE = InnoDB;\
+\
+\
+-- -----------------------------------------------------\
+-- Table `PURCHASE`.`INVENTORY`\
+-- -----------------------------------------------------\
+CREATE TABLE IF NOT EXISTS `PURCHASE`.`INVENTORY` (\
+  `part_num` INT NOT NULL,\
+  `item` VARCHAR(45) NULL,\
+  `qty_on_hand` VARCHAR(45) NULL,\
+  `unit_cost` VARCHAR(45) NULL,\
+  `order_id` INT NULL,\
+  PRIMARY KEY (`part_num`),\
+  UNIQUE INDEX `part_num_UNIQUE` (`part_num` ASC),\
+  INDEX `order_id_idx` (`order_id` ASC),\
+  CONSTRAINT `order_id`\
+    FOREIGN KEY (`order_id`)\
+    REFERENCES `mydb`.`ORDER` (`order_id`)\
+    ON DELETE NO ACTION\
+    ON UPDATE NO ACTION)\
+ENGINE = InnoDB;\
+\
+\
+SET SQL_MODE=@OLD_SQL_MODE;\
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;\
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;}
